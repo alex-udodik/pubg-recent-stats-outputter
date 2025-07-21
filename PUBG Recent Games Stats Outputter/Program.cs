@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Data.Sqlite;
+using Dapper;
 
 namespace PUBG_Recent_Games_Stats_Outputter
 {
@@ -14,6 +16,8 @@ namespace PUBG_Recent_Games_Stats_Outputter
         [STAThread]
         static void Main()
         {
+
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
