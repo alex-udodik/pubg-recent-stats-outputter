@@ -1,5 +1,8 @@
 ﻿using PUBG_Recent_Games_Stats_Outputter.APISerialization;
 using PUBG_Recent_Games_Stats_Outputter.APISerialization.Seasons;
+using PUBG_Recent_Games_Stats_Outputter.Stats.CurrentSeason;
+using PUBG_Recent_Games_Stats_Outputter.Stats.Last20;
+using PUBG_Recent_Games_Stats_Outputter.Stats.LastGame;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -148,36 +151,63 @@ namespace PUBG_Recent_Games_Stats_Outputter
 
             string gameMode = this.comboBoxGameModes.SelectedItem.ToString();
             MatchList matchlist = GetGameModeMatchList(gameMode, playerSeasonData.data.relationships);
-            GameStats gameStats = GetGameStats(gameMode, playerSeasonData.data.attributes.gameModeStats);
-            
+            GameStats gameStatsSeason = GetGameStats(gameMode, playerSeasonData.data.attributes.gameModeStats);
 
-            int count = 0;
+            List<MatchRoot> matchesRoot = new List<MatchRoot>();
+
             foreach (MatchItem match in matchlist.data)
             {
                 executor.Url = "https://api.pubg.com/shards/steam/matches/" + match.id;
                 json = await Task.Run(() => executor.ExecuteQuery());
-                //jsonMatches.Add(json);
-                count++;
-                //TODO: Now we just need to create a c# object to serialize match object
-                // get the matches.
-                //calculate stats
-                // output to file
-                if (count >= 19)
+                MatchRoot rootMatchObject = parser.SerializeMatchData(json);
+                matchesRoot.Add(rootMatchObject);
+            }
+
+            matchesRoot = matchesRoot
+                .OrderByDescending(m => DateTime.Parse(m.Data.Attributes.CreatedAt))
+                .ToList();
+
+            List<PlayerStats> playerStatsList = matchesRoot
+                .SelectMany(m => m.Included)
+                .Where(i =>
+                    i.Type == "participant" &&
+                    i.Attributes?.Stats?.PlayerId == accountId
+                )
+                .Select(i => i.Attributes.Stats)
+                .ToList();
+
+            LastGame lastGame = new LastGame(gameMode);
+            lastGame.Adr = playerStatsList.ElementAt(0).DamageDealt.ToString();
+            lastGame.SurvivedTime = playerStatsList.ElementAt(0).TimeSurvived.ToString();
+            lastGame.Kills = playerStatsList.ElementAt(0).Kills.ToString();
+            lastGame.Placement = playerStatsList.ElementAt(0).WinPlace.ToString();
+
+            /*CurrentSeason currentSeason = new CurrentSeason(gameMode);
+            currentSeason.Adr = gameStatsSeason.damageDealt.ToString();
+            currentSeason.SurvivedTime = gameStatsSeason.timeSurvived.ToString();
+            currentSeason.WinRate = (gameStatsSeason.wins / gameStatsSeason.roundsPlayed).ToString();*/
+
+            Last20 last20 = new Last20(gameMode);
+            double adr = 0;
+            double survivedTime = 0;
+
+            for (int i = 0; i < playerStatsList.Count; i++)
+            {
+                if (i == 20)
                 {
                     break;
                 }
-                //this.richTextBoxConsole.AppendText(json.ToString());
 
+                
             }
 
+            this.richTextBoxConsole.AppendText(lastGame.ToString());
+            
             this.richTextBoxConsole.AppendText("Finished");
 
         }
 
-        private AccountID.RootAccountIDObject FetchStats()
-        {
-            return null;
-        }
+
 
         private void comboBoxNames_SelectedIndexChanged(object sender, EventArgs e)
         {

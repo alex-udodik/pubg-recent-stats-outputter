@@ -263,7 +263,7 @@ namespace PUBG_Recent_Games_Stats_Outputter
             this.checkBoxVerticalOutput.Font = new System.Drawing.Font("Azonix", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxVerticalOutput.Location = new System.Drawing.Point(15, 421);
             this.checkBoxVerticalOutput.Name = "checkBoxVerticalOutput";
-            this.checkBoxVerticalOutput.Size = new System.Drawing.Size(333, 20);
+            this.checkBoxVerticalOutput.Size = new System.Drawing.Size(334, 20);
             this.checkBoxVerticalOutput.TabIndex = 18;
             this.checkBoxVerticalOutput.Text = "Send to text file vertically";
             this.checkBoxVerticalOutput.UseVisualStyleBackColor = true;
@@ -272,7 +272,7 @@ namespace PUBG_Recent_Games_Stats_Outputter
             // 
             this.richTextBoxConsole.Location = new System.Drawing.Point(12, 482);
             this.richTextBoxConsole.Name = "richTextBoxConsole";
-            this.richTextBoxConsole.Size = new System.Drawing.Size(502, 232);
+            this.richTextBoxConsole.Size = new System.Drawing.Size(649, 232);
             this.richTextBoxConsole.TabIndex = 19;
             this.richTextBoxConsole.Text = "";
             // 
@@ -282,14 +282,14 @@ namespace PUBG_Recent_Games_Stats_Outputter
             this.labelConsole.Font = new System.Drawing.Font("Azonix", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelConsole.Location = new System.Drawing.Point(12, 463);
             this.labelConsole.Name = "labelConsole";
-            this.labelConsole.Size = new System.Drawing.Size(92, 16);
+            this.labelConsole.Size = new System.Drawing.Size(93, 16);
             this.labelConsole.TabIndex = 20;
             this.labelConsole.Text = "Console";
             // 
             // buttonStart
             // 
             this.buttonStart.Font = new System.Drawing.Font("Azonix", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonStart.Location = new System.Drawing.Point(520, 569);
+            this.buttonStart.Location = new System.Drawing.Point(667, 566);
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(102, 52);
             this.buttonStart.TabIndex = 22;

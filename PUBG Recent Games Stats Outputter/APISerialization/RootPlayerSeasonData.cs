@@ -99,10 +99,7 @@ namespace PUBG_Recent_Games_Stats_Outputter.APISerialization
         public string id { get; set; }
     }
 
-    public class MatchData
-    {
-        public MatchItem data { get; set; }
-    }
+
 
 
 }
