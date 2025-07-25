@@ -157,8 +157,7 @@ namespace PUBG_Recent_Games_Stats_Outputter
                 .SelectMany(m => m.Included)
                 .Where(i =>
                     i.Type == "participant" &&
-                    i.Attributes?.Stats?.PlayerId == accountId
-                )
+                    i.Attributes?.Stats?.PlayerId == accountId)
                 .Select(i => i.Attributes.Stats)
                 .ToList();
 
@@ -187,7 +186,6 @@ namespace PUBG_Recent_Games_Stats_Outputter
 
                 adr += playerStatsList.ElementAt(i).DamageDealt;
                 survivedTime += playerStatsList.ElementAt(i).TimeSurvived;
-                
             }
 
             last20.Adr = (adr / count).ToString();
@@ -201,20 +199,14 @@ namespace PUBG_Recent_Games_Stats_Outputter
                 Output.UpdateTextFile(false, stat);
             }
 
-            //this.richTextBoxConsole.AppendText(lastGame.ToString() + "\n");
             this.richTextBoxConsole.AppendText(currentSeason.ToString() + "\n");
             this.richTextBoxConsole.AppendText(last20.ToString() + "\n");
-
-            //this.richTextBoxConsole.AppendText("Finished");
-
         }
 
         private void comboBoxNames_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.comboBoxNames.SelectedItem.ToString().Equals("< add player >"))
             {
-                //open new form
-
                 AddNameForm addNameForm = new AddNameForm();
                 addNameForm.AddRegisteredName = this.populateComboBox;
                 addNameForm.ShowDialog();
