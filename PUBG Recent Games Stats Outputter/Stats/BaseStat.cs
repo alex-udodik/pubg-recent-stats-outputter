@@ -11,7 +11,7 @@ namespace PUBG_Recent_Games_Stats_Outputter.Stats
     public abstract class BaseStat
     {
         protected GameMode mode;
-
+        protected string textFile;
         protected BaseStat(string modeString)
         {
             mode = ParseGameMode(modeString);
@@ -29,5 +29,7 @@ namespace PUBG_Recent_Games_Stats_Outputter.Stats
 
             throw new ArgumentException($"Invalid GameMode: {value}");
         }
+
+        public string TextFile => textFile; // read-only public access if needed
     }
 }

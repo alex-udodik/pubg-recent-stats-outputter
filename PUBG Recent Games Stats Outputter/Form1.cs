@@ -1,5 +1,6 @@
 ﻿using PUBG_Recent_Games_Stats_Outputter.APISerialization;
 using PUBG_Recent_Games_Stats_Outputter.APISerialization.Seasons;
+using PUBG_Recent_Games_Stats_Outputter.Stats;
 using PUBG_Recent_Games_Stats_Outputter.Stats.CurrentSeason;
 using PUBG_Recent_Games_Stats_Outputter.Stats.Last20;
 using PUBG_Recent_Games_Stats_Outputter.Stats.LastGame;
@@ -25,34 +26,19 @@ namespace PUBG_Recent_Games_Stats_Outputter
             players = new List<Player>();
             InitializeComponent();
             init();
-
         }
 
         private async void init()
         {
-
             players = await Sqlite.LoadAllPlayers();
             populateComboBox(null, new EventArgs());
-
-            //load names from sql database
-            //name is selected/added
-            //checkboxes are selected
-            //start is clicked
-
-            ////
-            //periodic timer is started (60 seconds)
-            //api is checked
-            //stats are calced.
-            //stats are parsed
-            //send to text file
-            //repeat
         }
 
         public void InitTimer()
         {
             timer = new Timer();
             timer.Tick += new EventHandler(timer_Tick);
-            timer.Interval = 2000; // in miliseconds
+            timer.Interval = 60000; // in miliseconds
             timer.Start();
         }
 
@@ -182,36 +168,49 @@ namespace PUBG_Recent_Games_Stats_Outputter
             lastGame.Kills = playerStatsList.ElementAt(0).Kills.ToString();
             lastGame.Placement = playerStatsList.ElementAt(0).WinPlace.ToString();
 
-            /*CurrentSeason currentSeason = new CurrentSeason(gameMode);
-            currentSeason.Adr = gameStatsSeason.damageDealt.ToString();
-            currentSeason.SurvivedTime = gameStatsSeason.timeSurvived.ToString();
-            currentSeason.WinRate = (gameStatsSeason.wins / gameStatsSeason.roundsPlayed).ToString();*/
+            CurrentSeason currentSeason = new CurrentSeason(gameMode);
+            currentSeason.Adr = (gameStatsSeason.damageDealt / gameStatsSeason.roundsPlayed).ToString();
+            currentSeason.SurvivedTime = (gameStatsSeason.timeSurvived / gameStatsSeason.roundsPlayed).ToString();
+            currentSeason.WinRate = (gameStatsSeason.wins / gameStatsSeason.roundsPlayed).ToString();
 
             Last20 last20 = new Last20(gameMode);
             double adr = 0;
             double survivedTime = 0;
-
+            int count = 0;
             for (int i = 0; i < playerStatsList.Count; i++)
             {
+                count = i;
                 if (i == 20)
                 {
                     break;
                 }
 
+                adr += playerStatsList.ElementAt(i).DamageDealt;
+                survivedTime += playerStatsList.ElementAt(i).TimeSurvived;
                 
             }
 
-            this.richTextBoxConsole.AppendText(lastGame.ToString());
-            
-            this.richTextBoxConsole.AppendText("Finished");
+            last20.Adr = (adr / count).ToString();
+            last20.SurvivedTime = (survivedTime / count).ToString();
+
+            List<BaseStat> stats = new List<BaseStat>();
+            stats.AddRange(new BaseStat[] { last20, currentSeason });
+
+            foreach (BaseStat stat in stats)
+            {
+                Output.UpdateTextFile(false, stat);
+            }
+
+            //this.richTextBoxConsole.AppendText(lastGame.ToString() + "\n");
+            this.richTextBoxConsole.AppendText(currentSeason.ToString() + "\n");
+            this.richTextBoxConsole.AppendText(last20.ToString() + "\n");
+
+            //this.richTextBoxConsole.AppendText("Finished");
 
         }
 
-
-
         private void comboBoxNames_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             if (this.comboBoxNames.SelectedItem.ToString().Equals("< add player >"))
             {
                 //open new form
@@ -220,7 +219,6 @@ namespace PUBG_Recent_Games_Stats_Outputter
                 addNameForm.AddRegisteredName = this.populateComboBox;
                 addNameForm.ShowDialog();
             }
-
         }
 
         private void populateComboBox(object sender, EventArgs e)
@@ -238,13 +236,6 @@ namespace PUBG_Recent_Games_Stats_Outputter
                 string name = player.name_;
                 this.comboBoxNames.Items.Add(name);
             }
-        }
-
-        private void OutputToTextFile(string path, string data, bool vertical)
-        {
-            Output output = new Output();
-
-
         }
 
         private void buttonStart_Click(object sender, EventArgs e)

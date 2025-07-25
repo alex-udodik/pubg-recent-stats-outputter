@@ -8,7 +8,6 @@ namespace PUBG_Recent_Games_Stats_Outputter.Stats.Last20
 {
     public class Last20 : BaseStat
     {
-        public string textFile = "Last20.txt";
         private string adr;
         private string survivedTime;
         private string fraggerRating;
@@ -17,7 +16,11 @@ namespace PUBG_Recent_Games_Stats_Outputter.Stats.Last20
         public string SurvivedTime { get => survivedTime; set => survivedTime = value; }
         public string FraggerRating { get => fraggerRating; set => fraggerRating = value; }
 
-        public Last20(string mode) :base(mode){ }
+
+        public Last20(string mode) : base(mode)
+        {
+            this.textFile = "Last20.txt";
+        }
 
         public override string ToString()
         {

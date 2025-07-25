@@ -8,8 +8,6 @@ namespace PUBG_Recent_Games_Stats_Outputter.Stats.LastGame
 {
     public class LastGame : BaseStat
     {
-
-        public string textFile = "LastGame.txt";
         private string adr;
         private string survivedTime;
         private string kills;
@@ -20,7 +18,10 @@ namespace PUBG_Recent_Games_Stats_Outputter.Stats.LastGame
         public string Kills { get => kills; set => kills = value; }
         public string Placement { get => placement; set => placement = value; }
 
-        public LastGame(string mode) : base(mode) { }
+        public LastGame(string mode) : base(mode)
+        {
+            this.textFile = "LastGame.txt";
+        }
 
         public override string ToString()
         {

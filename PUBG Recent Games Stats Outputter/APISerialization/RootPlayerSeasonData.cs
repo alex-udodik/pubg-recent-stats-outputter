@@ -1,4 +1,5 @@
-﻿using PUBG_Recent_Games_Stats_Outputter.AccountID;
+﻿using Newtonsoft.Json;
+using PUBG_Recent_Games_Stats_Outputter.AccountID;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,12 +31,21 @@ namespace PUBG_Recent_Games_Stats_Outputter.APISerialization
     public class GameModeStats
     {
         public GameStats duo { get; set; }
+
+        [JsonProperty("duo-fpp")]
         public GameStats duo_fpp { get; set; }
+
         public GameStats solo { get; set; }
+
+        [JsonProperty("solo-fpp")]
         public GameStats solo_fpp { get; set; }
+
         public GameStats squad { get; set; }
+
+        [JsonProperty("squad-fpp")]
         public GameStats squad_fpp { get; set; }
     }
+
 
     public class GameStats
     {

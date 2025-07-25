@@ -8,7 +8,6 @@ namespace PUBG_Recent_Games_Stats_Outputter.Stats.CurrentSeason
 {
     public class CurrentSeason : BaseStat
     {
-        public string textFile = "currentSeason.txt";
         private string adr;
         private string survivedTime;
         private string fraggerRating;
@@ -21,12 +20,15 @@ namespace PUBG_Recent_Games_Stats_Outputter.Stats.CurrentSeason
 
         public CurrentSeason(string mode) : base(mode)
         {
+            this.textFile = "currentSeason.txt";
         }
 
         public override string ToString()
         {
             return $"ADR: {adr} | Survived Time: {survivedTime} | Fragger Rating: {fraggerRating} | Win Rate: {winRate} | ";        
         }
+
+        
 
     }
 }
